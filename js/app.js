@@ -6,21 +6,27 @@ let leftimagelemant = document.getElementById('leftimg');
 let centerimagelemant = document.getElementById('centerimg');
 let rightimagelemant = document.getElementById('rightimg');
 
-let maxtime = 25;
+let maxtime = 20;
 let mintime = 0;
 
 let leftimagenumber;
 let centerimagenumber;
 let rightimagenumber;
+let nameForChart = []; 
+let votsForChart=[];
+let showForChart=[];
+
 function Productmall(name, path) {
     this.name = name;
     this.sorce = path;
     this.votes = 0;
     this.show = 0;
     Productmall.all.push(this);
+    nameForChart.push(this.name);
 }
 
 Productmall.all = [];
+
 
 new Productmall('bag', 'img/bag.jpg');
 new Productmall('banana', 'img/banana.jpg');
@@ -43,6 +49,7 @@ new Productmall('water-can', 'img/water-can.jpg');
 new Productmall('wine-glass', 'img/wine-glass.jpg');
 
 console.log(Productmall.all);
+// console.log(nameForChart);
 
 
 function randompruduct() {
@@ -52,18 +59,29 @@ function randompruduct() {
 
 console.log(randompruduct());
 
-
+let repetedNumber=[];
 function renderPruduct() {
     leftimagenumber = randompruduct()
     centerimagenumber = randompruduct()
     rightimagenumber = randompruduct()
+    
 
 
-    while (leftimagenumber === centerimagenumber || leftimagenumber === rightimagenumber || centerimagenumber === rightimagenumber) {
+    while (leftimagenumber === centerimagenumber || leftimagenumber === rightimagenumber || centerimagenumber === rightimagenumber ||repetedNumber.includes(leftimagenumber)||repetedNumber.includes(centerimagenumber)||repetedNumber.includes(rightimagenumber)) {
+        
         leftimagenumber = randompruduct()
         rightimagenumber = randompruduct()
         centerimagenumber = randompruduct()
     }
+    repetedNumber=[leftimagenumber, centerimagenumber,rightimagenumber]
+    console.log(repetedNumber);
+
+
+    // while (repetedNumber===repetedNumber++) {
+    //     leftimagenumber = randompruduct()
+    //     rightimagenumber = randompruduct()
+    //     centerimagenumber = randompruduct()
+    // }
 
     leftimagelemant.src = Productmall.all[leftimagenumber].sorce
     centerimagelemant.src = Productmall.all[centerimagenumber].sorce
@@ -79,14 +97,14 @@ renderPruduct()
 console.log(renderPruduct());
 
 
-// divContener.addEventListener('click', theClikes);
-leftimagelemant.addEventListener('click', theClikes);
-centerimagelemant.addEventListener('click', theClikes);
-rightimagelemant.addEventListener('click', theClikes);
+divContener.addEventListener('click', theClikes);
+// leftimagelemant.addEventListener('click', theClikes);
+// centerimagelemant.addEventListener('click', theClikes);
+// rightimagelemant.addEventListener('click', theClikes);
 
 function theClikes(event) {
-    mintime++;
-
+   
+   
 
     if (mintime < maxtime) {
 
@@ -104,9 +122,18 @@ function theClikes(event) {
             alert('pleas press on the picture ')
 
         }
+       
+    
     renderPruduct();
-        console.log(mintime);
+    while (repetedNumber[0]===leftimagenumber||repetedNumber[1]===centerimagenumber||repetedNumber[1]===rightimagenumber){
+        leftimagenumber = randompruduct()
+        rightimagenumber = randompruduct()
+        centerimagenumber = randompruduct()
     }
+        // console.log(mintime);
+
+    }
+    
 
 else {
     let thebutton=document.getElementById('pressresult')  
@@ -126,21 +153,99 @@ else {
     thebutton.removeEventListener('click',preesing)
 
     }
-
-    // divContener.removeEventListener('click',theClikes);
-    leftimagelemant.removeEventListener('click',theClikes);
-    centerimagelemant.removeEventListener('click', theClikes);
-    rightimagelemant.removeEventListener('click', theClikes);
-
-   
+    for (let i = 0; i < Productmall.all.length; i++) {
+        votsForChart.push(Productmall.all[i].votes)
+        showForChart.push(Productmall.all[i].show)
+        
     }
 
-   
+    divContener.removeEventListener('click',theClikes);
+    // leftimagelemant.removeEventListener('click',theClikes);
+    // centerimagelemant.removeEventListener('click', theClikes);
+    // rightimagelemant.removeEventListener('click', theClikes);
 
+    chartshow()
+    }
+   
+    mintime++;
 }
 
 
-  
+function chartshow() {
+    
+
+const data = {
+  labels: nameForChart,
+  datasets: [{
+    label: 'votetimes',
+    data: votsForChart,
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)',
+      'rgba(255, 205, 86, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(153, 102, 255, 0.2)',
+      'rgba(201, 203, 207, 0.2)'
+    ],
+    borderColor: [
+        'rgb(255, 99, 132)',
+        'rgb(255, 159, 64)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(54, 162, 235)',
+        'rgb(153, 102, 255)',
+        'rgb(201, 203, 207)'
+      ],
+      
+      borderWidth: 1
+      
+    },
+    {
+        label: 'showtimes',
+        data: showForChart,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(201, 203, 207, 0.2)'
+        ],
+        borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+          
+          borderWidth: 1
+          
+        }]
+    
+  };
+
+const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+  };
+
+  var myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+}
 
 
 
